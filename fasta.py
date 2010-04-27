@@ -27,7 +27,7 @@ class fasta:
         for line in self.handle:
             if line[0] == '>':
                 if sequence: yield dna(header, sequence)
-                header = line[1:].strip()
+                header = line[1:-1]
                 sequence = []
             else:
                 sequence.append(line.strip())
