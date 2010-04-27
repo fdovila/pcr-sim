@@ -1,7 +1,7 @@
-from fasta import *
-from blast import *
 from optparse import OptionParser
 import sys
+from fasta import *
+from blast import *
 
 VERSION = '0.0.1'
 
@@ -25,10 +25,23 @@ def main(argv):
                     metavar="REVERSE")
                     
     (options, args) = parser.parse_args()
-    
 
-    b = blast()
-
+    with open(options.filename, 'r') as handle:
+        records = fasta(handle)
+        for record in records:
+            
+            sequence = record.sequence()
+            
+            print 'f.prim = %s\nr.prim = %s' % (options.forward, options.reverse)
+            
+            rxn = reaction(sequence,
+            options.forward,
+            options.reverse)
+            rxn.react()
+            
+            print 'yeilds =  %s' % rxn.product
+            print 'f.score = %g\nr.score = %g\n' % (
+            rxn.start['score'], rxn.stop['score'])
     
     
 if __name__ == '__main__':
