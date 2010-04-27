@@ -5,6 +5,9 @@
 # This is used by pcr-sim to perform and parse BLAST alignments
 # Requires NCBI Blast+ (specifically bl2seq)
 
+# Does not really work in conjunction with fasta.py
+# I guess I should make it take DNA objects rather than sequence strings.
+
 # User editable variables:
 bl2seq = '/usr/bin/bl2seq'      # Location of bl2seq
 delete = 'rm'                   # Location of delete command
@@ -14,6 +17,7 @@ from random import randint
 import string
 
 _complement = string.maketrans('GATCRYgatcry','CTAGYRctagyr')
+_verbose = False
 
 class reaction:
     ''' Simulates a PCR reaction using BLAST.
@@ -23,12 +27,13 @@ class reaction:
         self.template = template
         self.forward = forward
         self.reverse = reverse.translate(_complement)[::-1]
-        self.start = { 'posn': 0, 'score': 0.0 }
-        self.stop = { 'posn': 0, 'score': 0.0 }
+        self.start = { 'posn': 0, 'score': -1 }
+        self.stop = { 'posn': 0, 'score': -1 }
+        self.product = 'Nothing!'
         
     def __repr__(self):
-        return '<RXN: %s..., %s... vs %s...>' % \
-        (self.forward[0:5], self.reverse[0:5], self.template[0:20])
+        return '<RXN ID = %s>' % \
+        (self.id)
 
     def _makefile(self, filename, data):
         ''' Creates a file for BLAST to use '''
@@ -37,7 +42,7 @@ class reaction:
     
     def _remfiles(self):
         ''' Removes necessary files. '''
-        subprocess.Popen([delete,
+        rem = subprocess.Popen([delete,
         'blst.out.%s' % self.id,
         'blst.tem.%s' % self.id,
         'blst.que.%s' % self.id,
@@ -55,16 +60,21 @@ class reaction:
         '-o', 'blst.out.%s' % self.id,
         ])
         blast_process.wait()
-        
-        output = open('blst.out.%s' % self.id, 'r').readlines()
-        output = output[3].split()
-        results = {
-            'start': int(output[5]),
-            'stop': int(output[6]),
-            'score': float(output[9])
-        }
-        return results
-
+    
+        # For testing right now...  Fix this.  Make an exception object?
+        try:
+            output = open('blst.out.%s' % self.id, 'r').readlines()            
+            output = output[3].split()
+        except:
+            return False # Bad BLAST!
+        else:
+            results = {
+                'start': int(output[5]),
+                'stop': int(output[6]),
+                'score': float(output[9])
+            }
+            return results
+            
     def react(self):
         ''' Performs the actual BLAST, returns region between hits. 
         I wish there was a way to do this without opening files. '''
@@ -75,34 +85,40 @@ class reaction:
         # Create & BLAST forward primer
         self._makefile('blst.que.%s' % self.id, self.forward)
         results = self._blasty()
-        self.start['posn'] = results['start']
-        self.start['score'] = results['score']    
+        if results:
+            self.start['posn'] = results['start']
+            self.start['score'] = results['score']    
         
         # Create & BLAST reverse primer
         self._makefile('blst.que.%s' % self.id, self.reverse)
         results = self._blasty()
-        self.stop['posn'] = results['stop']
-        self.stop['score'] = results['score']  
+        if results:
+            self.stop['posn'] = results['stop']
+            self.stop['score'] = results['score']  
                  
         # Remove files
         self._remfiles()
         
         # Create PCR product
-        self.product = self.template[self.start['posn']-1:self.stop['posn']-3]
+        self.product = self.template[self.start['posn']-1:self.stop['posn']]
         
-        self.product
+        return self.product
 
 def test():
-    print 'Testing!'
-    go = reaction('agagtttgatcatggctcagattgaacgctggcggcaggcctaacacatgcaagtcgagcggatgacgggagcttgctccttgattcagcggcggacgggtgagtaatgcctaggaatctgcctggtagtgggggacaacgtttcgaaaggaacgctaataccgcatacgtcctacgggagaaagcaggggaccttcgggccttgcgctatcagatgagcctaggtcggattagctagttggtggggtaatggctcaccaaggcgacgatccgtaactggtctgagaggatgatcagtcacactggaactgagacacggtccagac','gatcatggctcagattgaacgctggcgg','gtgactgatcatcctctcagaccagt')
+    ''' A simple test '''
+    
+    forward = 'gatcatggctcagattgaacgctggcgg'
+    reverse = 'gtgactgatcatcctctcagaccagtaa'
+    
+    go = reaction(forward + reverse, forward, reverse)
     go.react()
     
-    if go.product == 'gatcatggctcagattgaacgctggcggcaggcctaacacatgcaagtcgagcggatgacgggagcttgctccttgattcagcggcggacgggtgagtaatgcctaggaatctgcctggtagtgggggacaacgtttcgaaaggaacgctaataccgcatacgtcctacgggagaaagcaggggaccttcgggccttgcgctatcagatgagcctaggtcggattagctagttggtggggtaatggctcaccaaggcgacgatccgtaactggtctgagaggatgatcagt':
-        print 'Everything went better than expected!'
+    if go.product == forward+reverse:
+        return 0
     else:
-        print 'Some kind of error!'
-        
-    
+        return 1
+
+
 if __name__ == '__main__':
     test()
     
