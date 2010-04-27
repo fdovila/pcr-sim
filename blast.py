@@ -17,12 +17,15 @@ from random import randint
 import string
 
 _complement = string.maketrans('GATCRYgatcry','CTAGYRctagyr')
-_verbose = False
 
 class reaction:
     ''' Simulates a PCR reaction using BLAST.
-    Try running using multiprocessing module! '''
+    Create a reaction object:
+    a = reaction('template','forward','reverse')
+    '''
     def __init__(self, template, forward, reverse):
+        '''Must provide template, forward primer and reverse primer as
+        strings'''
         self.id = hex(randint(0,65535))[2:]
         self.template = template
         self.forward = forward
@@ -30,8 +33,10 @@ class reaction:
         self.start = { 'posn': 0, 'score': -1 }
         self.stop = { 'posn': 0, 'score': -1 }
         self.product = 'Nothing!'
+        self.raw_output = ''
         
     def __repr__(self):
+        '''Representation of objectw'''
         return '<RXN ID = %s>' % \
         (self.id)
 
@@ -62,8 +67,11 @@ class reaction:
         blast_process.wait()
     
         # For testing right now...  Fix this.  Make an exception object?
+        
         try:
-            output = open('blst.out.%s' % self.id, 'r').readlines()            
+            output = open('blst.out.%s' % self.id, 'r').readlines()
+            self.raw_output = output 
+            print '(%s)' % self.raw_output[3].split()  
             output = output[3].split()
         except:
             return False # Bad BLAST!
@@ -105,7 +113,8 @@ class reaction:
         return self.product
 
 def test():
-    ''' A simple test '''
+    ''' A simple test
+    returns 0 if everything went better than expected and 1 otherwise.'''
     
     forward = 'gatcatggctcagattgaacgctggcgg'
     reverse = 'gtgactgatcatcctctcagaccagtaa'

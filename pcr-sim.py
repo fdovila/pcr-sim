@@ -5,10 +5,6 @@ from blast import *
 
 VERSION = '0.0.1'
 
-def usage():
-    print 'Usage:'
-    
-
 def main(argv):
     """Simulates a PCR, outputs \"contigs\" """
     
@@ -29,20 +25,17 @@ def main(argv):
     with open(options.filename, 'r') as handle:
         records = fasta(handle)
         for record in records:
-            
             sequence = record.sequence()
             
             print 'record = %s' % record.head
-            print 'f.prim = %s\nr.prim = %s' % (options.forward, options.reverse)
-            
+          
             rxn = reaction(sequence,
             options.forward,
             options.reverse)
             rxn.react()
             
-            print 'yeilds =  %s' % rxn.product
-            print 'f.score = %g\nr.score = %g\n' % (
-            rxn.start['score'], rxn.stop['score'])
+            print 'yeilds = %s\n' % rxn.product
+            
     
     
 if __name__ == '__main__':
