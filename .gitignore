@@ -1,2 +1,3 @@
-*.pyc
-test.fasta
+*.pyc			# compiled python
+test.fasta		# test input
+blst*			# BLAST files that don't get properly deleted
