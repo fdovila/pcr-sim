@@ -55,3 +55,20 @@ Invoke thusly::
 	  -r REVERSE, --reverse=REVERSE
 	                        Specify reverse primer (5' to 3')
 
+TEST
+====
+
+If you want to try it out, make a test.fasta with this record:
+
+	>AB009457_Pseudomonas_plecoglossicida
+	agagtttgatcatggctcagattgaacgctggcggcaggcctaacacatgcaagtcgagcggatgacgggagcttgct
+	ccttgattcagcggcggacgggtgagtaatgcctaggaatctgcctggtagtgggggacaacgtttcgaaaggaacgc
+	taataccgcatacgtcctacgggagaaagcaggggaccttcgggccttgcgctatcagatgagcctaggtcggattag
+	ctagttggtggggtaatggctcaccaaggcgacgatccgtaactggtctgagaggatgatcagtcacactggaactga
+	gacacggtccagac
+	
+and test with this command
+
+	python pcr-sim.py -i test.fasta -f agagtttgatcctggctcag -r gctgcctcccgtaggagt 
+
+
