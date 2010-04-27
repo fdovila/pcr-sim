@@ -38,7 +38,7 @@ pcr-sim requires the following
 USAGE
 =====
 
-*Invoke thusly*::
+*Invoke thusly::
 	Usage: pcr-sim.py [options]
 
 	pcr-sim.py - Simulates PCR on a given input FASTA file using BLAST.
