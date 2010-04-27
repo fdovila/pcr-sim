@@ -2,8 +2,9 @@
  PCR-SIM
 =========
 
-By: Austin Davis-Richardson
+	By: Austin Davis-Richardson
 	harekrishna@gmail.com
+	
 	
 
  DESCRIPTION
