@@ -32,6 +32,7 @@ def main(argv):
             
             sequence = record.sequence()
             
+            print 'record = %s' % record.head
             print 'f.prim = %s\nr.prim = %s' % (options.forward, options.reverse)
             
             rxn = reaction(sequence,
