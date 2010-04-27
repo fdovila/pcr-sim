@@ -1,3 +1,7 @@
+# Two objects for handling FASTA files
+# dna is a DNA object representing a FASTA record with a header and sequence
+# fasta is a FASTA iterator that yields DNA objects
+
 class dna:
     ''' Object representing a FASTA record. '''
     def __init__(self, header, sequence):
