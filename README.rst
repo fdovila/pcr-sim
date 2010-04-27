@@ -9,7 +9,11 @@ DESCRIPTION
 ===========
 
 PCR-SIM is a Polymerase Chain Reaction Simulator.  It uses BLAST to predict
-where two primers will anneal on a template.
+where two primers will anneal on a template.  Its output is a FASTA file
+with the PCR products that would result given the primers.
+
+This script is very simple and does not take into account anything like
+annealing temperature or extension time.
 
 It's currently in development therefore this README is tentative.
 
@@ -18,6 +22,8 @@ LICENSE
 
 This program is licensed under the GNU GPL 3 license:
 http://www.gnu.org/licenses/gpl-3.0.txt
+
+This software is distributed with *ABSOLUTELY NO WARRANT*
 
 REQUIREMENTS
 ============
@@ -32,8 +38,7 @@ pcr-sim requires the following
 USAGE
 =====
 
-Invoke thusly::
-
+*Invoke thusly*::
 	Usage: pcr-sim.py [options]
 
 	pcr-sim.py - Simulates PCR on a given input FASTA file using BLAST.
