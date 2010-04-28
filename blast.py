@@ -36,7 +36,6 @@ class reaction:
         self.raw_output = ''
         
     def __repr__(self):
-        '''Representation of objectw'''
         return '<RXN ID = %s>' % \
         (self.id)
 
@@ -55,7 +54,6 @@ class reaction:
         
     def _blasty(self):
         ''' Performs a blast! '''
-        
         # Runs the bl2seq command
         blast_process = subprocess.Popen([bl2seq,
         '-p', 'blastn',
