@@ -54,6 +54,10 @@ Invoke thusly::
 	                        Specify forward primer (5' to 3')
 	  -r REVERSE, --reverse=REVERSE
 	                        Specify reverse primer (5' to 3')
+	
+pcr-sim will output directly to STDOUT so pipe it to a new FASTA file
+
+	pcr-sim.py -i input.fasta -f GA..TC -r GA..TC > pcr_products.fasta
 
 TEST
 ====
