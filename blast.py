@@ -7,6 +7,8 @@
 
 # Does not really work in conjunction with fasta.py
 # I guess I should make it take DNA objects rather than sequence strings.
+# Sometimes, I don't know if I'm getting this object-oriented programming
+# paradigm as well as I ought to.
 
 # User editable variables:
 bl2seq = '/usr/bin/bl2seq'      # Location of bl2seq
@@ -36,8 +38,7 @@ class reaction:
         self.raw_output = ''
         
     def __repr__(self):
-        return '<RXN ID = %s>' % \
-        (self.id)
+        return '<RXN ID = %s>' % (self.id)
 
     def _makefile(self, filename, data):
         ''' Creates a file for BLAST to use '''
@@ -65,11 +66,9 @@ class reaction:
         blast_process.wait()
     
         # For testing right now...  Fix this.  Make an exception object?
-        
         try:
             output = open('blst.out.%s' % self.id, 'r').readlines()
             self.raw_output = output 
-            print '(%s)' % self.raw_output[3].split()  
             output = output[3].split()
         except:
             return False # Bad BLAST!
@@ -92,16 +91,21 @@ class reaction:
         self._makefile('blst.que.%s' % self.id, self.forward)
         results = self._blasty()
         if results:
+            print results
             self.start['posn'] = results['start']
             self.start['score'] = results['score']    
+        else:
+            print 'crap!'
         
         # Create & BLAST reverse primer
         self._makefile('blst.que.%s' % self.id, self.reverse)
         results = self._blasty()
         if results:
+            print results
             self.stop['posn'] = results['stop']
             self.stop['score'] = results['score']  
-                 
+        else:
+            print 'crap!'
         # Remove files
         self._remfiles()
         
