@@ -91,21 +91,16 @@ class reaction:
         self._makefile('blst.que.%s' % self.id, self.forward)
         results = self._blasty()
         if results:
-            print results
             self.start['posn'] = results['start']
             self.start['score'] = results['score']    
-        else:
-            print 'crap!'
-        
+
         # Create & BLAST reverse primer
         self._makefile('blst.que.%s' % self.id, self.reverse)
         results = self._blasty()
         if results:
-            print results
             self.stop['posn'] = results['stop']
             self.stop['score'] = results['score']  
-        else:
-            print 'crap!'
+
         # Remove files
         self._remfiles()
         
