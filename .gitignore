@@ -1,3 +1,4 @@
 *.pyc
-test.fasta
+*.fasta
 blst*
+.DS_Store
