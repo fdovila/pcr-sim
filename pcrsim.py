@@ -27,14 +27,17 @@ def main(argv):
         for record in records:
             sequence = record.sequence()
             
-            print '\nrecord = %s' % record.head
+           # print 'record = %s' % record.head
           
             rxn = reaction(sequence,
             options.forward,
             options.reverse)
             rxn.react()
+                        
+            product = dna(record.head, rxn.product)
+            if rxn.product:
+                print product
             
-          # print 'yeilds = %s\n' % rxn.product
             
     
     
