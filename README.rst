@@ -1,5 +1,5 @@
 =========
- PCR-SIM
+ pcrsim
 =========
 
 By: Austin Davis-Richardson
@@ -8,7 +8,7 @@ harekrishna@gmail.com
 DESCRIPTION
 ===========
 
-PCR-SIM is a Polymerase Chain Reaction Simulator.  It uses BLAST to predict
+pcrsim is a Polymerase Chain Reaction Simulator.  It uses BLAST to predict
 where two primers will anneal on a template.  Its output is a FASTA file
 with the PCR products that would result given the primers.
 
@@ -28,7 +28,7 @@ This software is distributed with *ABSOLUTELY NO WARRANT*
 REQUIREMENTS
 ============
 
-pcr-sim requires the following
+pcrsim requires the following
 
 * Python 2.6.5
 * NCBI Blast+ 2.2.23 (specifically, bl2seq and blastn)
@@ -40,9 +40,9 @@ USAGE
 
 Invoke thusly::
 
-	Usage: pcr-sim.py [options]
+	Usage: pcrsim.py [options]
 
-	pcr-sim.py - Simulates PCR on a given input FASTA file using BLAST.
+	pcrsim.py - Simulates PCR on a given input FASTA file using BLAST.
 
 	Options:
 	  --version             show program's version number and exit
@@ -55,9 +55,9 @@ Invoke thusly::
 	  -r REVERSE, --reverse=REVERSE
 	                        Specify reverse primer (5' to 3')
 	
-pcr-sim will output directly to STDOUT so pipe it to a new FASTA file
+pcrsim will output directly to STDOUT so pipe it to a new FASTA file
 
-	pcr-sim.py -i input.fasta -f GA..TC -r GA..TC > pcr_products.fasta
+	pcrsim.py -i input.fasta -f GA..TC -r GA..TC > pcr_products.fasta
 
 TEST
 ====
@@ -73,6 +73,6 @@ If you want to try it out, make a test.fasta with this record:
 	
 and test with this command
 
-	python pcr-sim.py -i test.fasta -f agagtttgatcctggctcag -r gctgcctcccgtaggagt 
+	python pcrsim.py -i test.fasta -f agagtttgatcctggctcag -r gctgcctcccgtaggagt 
 
 
