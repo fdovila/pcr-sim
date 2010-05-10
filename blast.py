@@ -22,8 +22,8 @@ _complement = string.maketrans('GATCRYgatcry','CTAGYRctagyr')
 
 class Reaction:
     ''' Simulates a PCR reaction using BLAST.
-    Create a reaction object:
-    a = reaction('template','forward','reverse')
+    Create a Reaction object:
+    a = Reaction('template','forward','reverse')
     '''
     def __init__(self, template, forward, reverse):
         '''Must provide template, forward primer and reverse primer as
@@ -116,13 +116,14 @@ def test():
     forward = 'gatcatggctcagattgaacgctggcgg'
     reverse = 'gtgactgatcatcctctcagaccagtaa'
     
-    go = reaction(forward + reverse, forward, reverse)
+    go = Reaction(forward + reverse, forward, reverse)
     go.react()
     
     if go.product == forward+reverse:
         return 0
     else:
         return 1
+        print >> stderr, 'blast.py test failed!'
 
 
 if __name__ == '__main__':
