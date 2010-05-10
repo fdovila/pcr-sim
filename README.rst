@@ -31,7 +31,7 @@ REQUIREMENTS
 pcr-sim requires the following
 
 * Python 2.6.5
-* NCBI Blast+ 2.2.22 (specifically, bl2seq and blastn)
+* NCBI Blast+ 2.2.23 (specifically, bl2seq and blastn)
 * A UNIX-like operating system.  Tested on Mac OS 10.6 and Ubuntu 9.04
 
 
