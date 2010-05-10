@@ -36,8 +36,8 @@ def main(argv):
                         
             product = dna(record.head, rxn.product)
             if rxn.product:
+                print >> sys.stderr, product
                 print product
-            
             
     
     
@@ -45,5 +45,5 @@ if __name__ == '__main__':
     try:
         main(sys.argv)
     except KeyboardInterrupt:
-        print 'User Exited!'
+        print >> sys.stderr, 'User Exited!'
         quit()
