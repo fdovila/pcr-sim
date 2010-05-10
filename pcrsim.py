@@ -37,7 +37,7 @@ def main(argv):
                         
             product = dna(record.head, rxn.product)
             if rxn.product:
-                print >> sys.stderr, product
+                print >> sys.stdout, product
                 print product
             
     
