@@ -77,7 +77,7 @@ and test with this command
 	
 Get lengths of products
 
-    ./pcrsim.py -i rdp.fa -f aatgatacggcgaccagagatctacactctttcactcctacgggaggcagcag -r gtgccagcagccgcggtaagctccagtcacnnnnnnatctcgtatgccgtcttctgcttg | grep -v '^[>]' | awk '{ print length($0) }'
+    ./pcrsim.py -i in.fa -f agagtttgatcctggctcag -r gctgcctcccgtaggagt | grep -v '^[>]' | awk '{ print length($0) }'
 
 
 
