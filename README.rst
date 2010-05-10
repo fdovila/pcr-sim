@@ -73,6 +73,10 @@ If you want to try it out, make a test.fasta with this record:
 	
 and test with this command
 
-	python pcrsim.py -i test.fasta -f agagtttgatcctggctcag -r gctgcctcccgtaggagt 
+	./pcrsim.py -i test.fasta -f agagtttgatcctggctcag -r gctgcctcccgtaggagt 
+	
+Get lengths of products:
+    ./pcrsim.py -i rdp.fa -f aatgatacggcgaccagagatctacactctttcactcctacgggaggcagcag -r gtgccagcagccgcggtaagctccagtcacnnnnnnatctcgtatgccgtcttctgcttg | grep -v '^[>]' | awk '{ print length($0) }'
+
 
 
