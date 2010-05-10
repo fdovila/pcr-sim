@@ -1,4 +1,5 @@
 *.pyc
 *.fasta
+*.fa
 blst*
 .DS_Store
