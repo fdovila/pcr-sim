@@ -20,7 +20,7 @@ import string
 
 _complement = string.maketrans('GATCRYgatcry','CTAGYRctagyr')
 
-class reaction:
+class Reaction:
     ''' Simulates a PCR reaction using BLAST.
     Create a reaction object:
     a = reaction('template','forward','reverse')
@@ -59,9 +59,6 @@ class reaction:
         blast_process = subprocess.Popen([bl2seq,
         '-p', 'blastn',
         '-D', '1',
-#        '-q', '-6',
-#        '-g', 'F',
-#        '-r', '5',
         '-i', 'blst.tem.%s' % self.id,
         '-j', 'blst.que.%s' % self.id,
         '-o', 'blst.out.%s' % self.id,

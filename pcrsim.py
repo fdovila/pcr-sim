@@ -24,23 +24,18 @@ def main(argv):
     (options, args) = parser.parse_args()
 
     with open(options.filename, 'r') as handle:
-        records = fasta(handle)
+        records = Fasta(handle)
         for record in records:
             sequence = record.sequence()
-            
-           # print 'record = %s' % record.head
-          
-            rxn = reaction(sequence,
+                      
+            rxn = Reaction(sequence,
             options.forward,
             options.reverse)
             rxn.react()
                         
-            product = dna(record.head, rxn.product)
+            product = Dna(record.head, rxn.product)
             if rxn.product:
-                print >> sys.stdout, product
-                print product
-            
-    
+                print product            
     
 if __name__ == '__main__':
     try:

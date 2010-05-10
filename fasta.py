@@ -2,7 +2,7 @@
 # dna is a DNA object representing a FASTA record with a header and sequence
 # fasta is a FASTA iterator that yields DNA objects
 
-class dna:
+class Dna:
     ''' Object representing a FASTA record. '''
     def __init__(self, header, sequence):
         self.head = header
@@ -16,7 +16,7 @@ class dna:
     def sequence(self, separator=''):
         return separator.join(self.seq)
         
-class fasta:
+class Fasta:
     ''' A FASTA iterator/generates DNA objects. '''
     def __init__(self, handle):
         self.handle = handle
@@ -31,4 +31,4 @@ class fasta:
                 sequence = []
             else:
                 sequence.append(line.strip())
-        yield dna(header, sequence)
+        yield Dna(header, sequence)
