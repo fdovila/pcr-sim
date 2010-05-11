@@ -26,14 +26,12 @@ def main(argv):
                     help="Save not primed sequences to not_primed (optional)",
                     type="string")
                     
-                    
     (options, args) = parser.parse_args()
     
     if not (options.filename or options.forward or options.reverse):
         print >> sys.stderr, 'Usage:', parser.usage
         quit()
         
-    
     if options.notprimed:
         hnotprimed = open(options.notprimed, 'w')
 
