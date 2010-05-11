@@ -15,7 +15,7 @@ bl2seq = '/usr/bin/bl2seq'      # Location of bl2seq
 delete = 'rm'                   # Location of delete command
                                 # (If I ever care to make this MS-Friendly)
 import subprocess
-from random import randint
+import random
 import string
 
 _complement = string.maketrans('GATCRYgatcry','CTAGYRctagyr')
@@ -28,7 +28,8 @@ class Reaction:
     def __init__(self, template, forward, reverse):
         '''Must provide template, forward primer and reverse primer as
         strings'''
-        self.id = hex(randint(0,65535))[2:]
+        random.seed()
+        self.id = hex(random.randint(0,65535))[2:]
         self.template = template
         self.forward = forward
         self.reverse = reverse.translate(_complement)[::-1]
