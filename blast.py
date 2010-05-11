@@ -123,9 +123,8 @@ def test():
     if go.product == forward+reverse:
         return 0
     else:
-        return 1
         print >> stderr, 'blast.py test failed!'
-
+        return 1
 
 if __name__ == '__main__':
     test()
