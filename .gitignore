@@ -3,3 +3,12 @@
 *.fa
 blst*
 .DS_Store
+
+# BLAST database
+*nhr
+*nin
+*.nsq
+*.nhr
+*.nin
+*.nsq
+
