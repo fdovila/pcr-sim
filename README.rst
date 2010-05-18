@@ -17,6 +17,7 @@ annealing temperature or extension time.
 
 It's currently in development therefore this README is tentative.
 
+
 LICENSE
 =======
 
@@ -80,4 +81,9 @@ Get lengths of products
     ./pcrsim.py -i in.fa -f agagtttgatcctggctcag -r gctgcctcccgtaggagt | grep -v '^[>]' | awk '{ print length($0) }'
 
 
+BUGS
+====
 
+I haven't accounted for strand when parsing BLAST output.  This doesn't
+seem to be a problem when I use this script for what I use this script for.
+Don't trust it!
