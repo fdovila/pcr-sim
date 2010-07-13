@@ -3,7 +3,7 @@
 PCR Product Generator (given primers)
 
 By: Austin Davis-Richardson
-    <harekrishna@gmail.com>
+<harekrishna@gmail.com>
 	
 ## What it does:
 
