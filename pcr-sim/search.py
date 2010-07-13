@@ -29,7 +29,7 @@ You can set attributes here (if allowed). '''
         sub = self.subject[offset:len(self.query) + offset]
         score = 0
         for i, j in zip(sub, self.query):
-            if i in 'Nn ': continue
+            if (i or j) in 'Nn ': continue
             if i == j and i in 'GgCc': score += self.gc_score
             if i == j and i in 'AaTt': score += self.at_score
             if i is not j: score -= self.miss_pen  
