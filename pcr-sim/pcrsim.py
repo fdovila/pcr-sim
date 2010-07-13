@@ -2,7 +2,7 @@
 from optparse import OptionParser
 import sys
 from fasta import *
-from blast import *
+from search import *
 
 VERSION = '0.0.1'
 
@@ -10,7 +10,7 @@ def main(argv):
     """Simulates a PCR, outputs \"contigs\" """
     
     parser = OptionParser(description='pcrsim.py - Simulates PCR on a given input FASTA file using BLAST.', 
-    usage = './pcrsim.py -i infile -f forward_primer -r reverse_primer',
+    usage = 'pcrsim.py -i infile -f forward_primer -r reverse_primer',
     version=VERSION)
     parser.add_option("-v", "--verbose", dest="verbose", default=False,
                     action="store_false", help="Print Debugging Information")
@@ -38,18 +38,17 @@ def main(argv):
     with open(options.filename, 'r') as handle:
         records = Fasta(handle)
         for record in records:
-            sequence = record.sequence()
-                      
-            rxn = Reaction(sequence,
-            options.forward,
-            options.reverse)
-            rxn.react()
-                        
-            product = Dna(record.head, rxn.product)
-            if rxn.product:
-                print product
-            else:
-                if options.notprimed: print >> hnotprimed, record           
+            template = record.sequence()
+
+            forward = Search.match(template, options.forward)
+            reverse = Search.match(template, options.reverse)
+        
+            print forward.start, reverse.stop
+                                
+#            if rxn.product:
+ #               print product
+  #          else:
+   #             if options.notprimed: print >> hnotprimed, record           
     
 if __name__ == '__main__':
     try:
