@@ -1,33 +1,24 @@
-=========
- pcrsim
-=========
+# PCR-Sim
+
+PCR Product Generator (given primers)
 
 By: Austin Davis-Richardson
-harekrishna@gmail.com
+    <harekrishna@gmail.com>
 	
-DESCRIPTION
-===========
+## What it does:
 
-pcrsim is a Polymerase Chain Reaction Simulator.  It uses BLAST to predict
-where two primers will anneal on a template.  Its output is a FASTA file
-with the PCR products that would result given the primers.
+PCR-Sim matches primer sequence to a multifasta file of templates and prints
+out products (including primers).  It does so by BLASTing each template
+with each primer to find match.
 
-This script is very simple and does not take into account anything like
-annealing temperature or extension time.
-
-It's currently in development therefore this README is tentative.
-
-
-LICENSE
-=======
+## License
 
 This program is licensed under the GNU GPL 3 license:
 http://www.gnu.org/licenses/gpl-3.0.txt
 
 This software is distributed with *ABSOLUTELY NO WARRANT*
 
-REQUIREMENTS
-============
+## Pre-reqs
 
 pcrsim requires the following
 
@@ -36,8 +27,7 @@ pcrsim requires the following
 * A UNIX-like operating system.  Tested on Mac OS 10.6 and Ubuntu 9.04
 
 
-USAGE
-=====
+## How-To
 
 Invoke thusly::
 
@@ -60,8 +50,7 @@ pcrsim will output directly to STDOUT so pipe it to a new FASTA file
 
 	pcrsim.py -i input.fasta -f GA..TC -r GA..TC > pcr_products.fasta
 
-TEST
-====
+## Testing
 
 If you want to try it out, make a test.fasta with this record:
 
@@ -81,9 +70,6 @@ Get lengths of products
     ./pcrsim.py -i in.fa -f agagtttgatcctggctcag -r gctgcctcccgtaggagt | grep -v '^[>]' | awk '{ print length($0) }'
 
 
-BUGS
-====
+## Bugs
 
-I haven't accounted for strand when parsing BLAST output.  This doesn't
-seem to be a problem when I use this script for what I use this script for.
-Don't trust it!
+Uses BLAST
