@@ -26,7 +26,6 @@ pcrsim requires the following
 * NCBI Blast+ 2.2.23 (specifically, bl2seq and blastn)
 * A UNIX-like operating system.  Tested on Mac OS 10.6 and Ubuntu 9.04
 
-
 ## How-To
 
 Invoke thusly::
@@ -68,7 +67,6 @@ and test with this command
 Get lengths of products
 
     ./pcrsim.py -i in.fa -f agagtttgatcctggctcag -r gctgcctcccgtaggagt | grep -v '^[>]' | awk '{ print length($0) }'
-
 
 ## Bugs
 

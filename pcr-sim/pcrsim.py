@@ -9,7 +9,7 @@ VERSION = '0.0.1'
 def main(argv):
     """Simulates a PCR, outputs \"contigs\" """
     
-    parser = OptionParser(description='pcrsim.py - Simulates PCR on a given input FASTA file using BLAST.', 
+    parser = OptionParser(description='pcrsim.py - Simulates PCR on a given input FASTA.', 
     usage = 'pcrsim.py -i infile -f forward_primer -r reverse_primer',
     version=VERSION)
     parser.add_option("-v", "--verbose", dest="verbose", default=False,
@@ -35,21 +35,20 @@ def main(argv):
     if options.notprimed:
         hnotprimed = open(options.notprimed, 'w')
 
+    # We can just recycle this object over and over again to save time!
+    S = Search(gc_score=2, at_score=1, miss_penn=1)
+
+    forward = options.forward
+    reverse = Dna('r', options.reverse).revcomp
+
     with open(options.filename, 'r') as handle:
         records = Fasta(handle)
-        for record in records:
-            template = record.sequence()
+        for i, rec in enumerate(records):
+            so_f = S.find(rec.seq, forward)
+            so_r = S.find(reverse)
+            print '%5s-> <-%-5s/%5s' % (so_f[1], so_r[1], len(rec.seq))
 
-            forward = Search.match(template, options.forward)
-            reverse = Search.match(template, options.reverse)
-        
-            print forward.start, reverse.stop
-                                
-#            if rxn.product:
- #               print product
-  #          else:
-   #             if options.notprimed: print >> hnotprimed, record           
-    
+            
 if __name__ == '__main__':
     try:
         main(sys.argv)
