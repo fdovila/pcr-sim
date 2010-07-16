@@ -40,6 +40,6 @@ class Fasta:
                 header = line[1:-1]
                 sequence = []
             else:
-                sequence.append(line.strip())
+                sequence.append(line.strip().upper())
         yield Dna(header, sequence)
         

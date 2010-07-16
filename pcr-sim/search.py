@@ -4,6 +4,28 @@
 ''' I decided to drop BLAST in favor of writing my own search algorithm.
 It's faster because there's no disk IO'''
 
+class SequenceError(Exception):
+    pass
+
+nucleotides = {
+ 'A': 'A',    # Adenosine
+ 'C': 'C',    # Cytidine
+ 'G': 'G',      # Guanine
+ 'T': 'T',      # Thymidine
+ 'U': 'U',      # Uridine
+ 'R': 'AG',     # Purine
+ 'Y': 'TC',     # Pyrimidine
+ 'K': 'GT',     # Keto
+ 'M': 'AC',     # Amino
+ 'S': 'GC',     # Strong Interaction (3H)
+ 'W': 'AT',     # Weak Interaction (2H)
+ 'B': 'CGT',    # Not Adenine
+ 'D': 'ATG',    # Not Cytosine
+ 'H': 'ACT',    # Not Guanine
+ 'V': 'ACG',    # Neither Thymidine nor Uridine
+ 'N': 'GATCU',  # Any nucleotide
+}
+
 class Search:
     ''' an object representing fuzzy, ungapped queryage. '''
     
@@ -12,9 +34,7 @@ class Search:
 You can set attributes here (if allowed). '''
         defaults = {
             # G≡C while A=T
-            'gc_score': 3,
-            'at_score': 2,
-            # Could make this the opposite of match
+            'score': 1,
             'miss_pen': 1,
             'padding': 10 }
         for attr in defaults:
@@ -29,28 +49,43 @@ You can set attributes here (if allowed). '''
         sub = self.subject[offset:len(self.query) + offset]
         score = 0
         for i, j in zip(sub, self.query):
-            if (i or j) in 'Nn ': continue
-            if i == j and i in 'GgCc': score += self.gc_score
-            if i == j and i in 'AaTt': score += self.at_score
-            if i is not j: score -= self.miss_pen  
+            try:
+                if nucleotides[i] == nucleotides[j] and 'N' not in (i, j):
+                    score += self.score
+                if i is not j:
+                    score -= self.miss_pen
+                else: continue
+            except KeyError:
+                raise SequenceError, 'funky nucleotide? %s or %s' % (i, j) 
         return score
         
-    def find(self, *vargs):
+    @property
+    def alignments(self):
+        ''' returns a string of all possible alignments '''
+        assert self.scores
+        rez = []
+
+        for score, offset in self.scores:
+            rez += '\n%-5s => %s \n%-7s  %s \n' % \
+             (score, self.query, offset, self.subject[offset:offset+len(self.query)] )
+        return ''.join(rez)
+        
+    def find(self, **kwargs):
         ''' Performs actual query - returns int representing start pos\'n. '''
-        assert len(vargs) > 0 
+        assert 'query' in kwargs
+        
         # This way you can recycle the object.
-        if len(vargs) is 1:
-            self.query = vargs[0]
+        if 'subject' in kwargs:
+            self.subject = kwargs['subject']
+            self.query = kwargs['query']
         else:
-            self.subject = self.padding + vargs[0] + self.padding
-            self.query = vargs[1]
+            self.query = kwargs['query']
+        
         self.scores = []
         for offset in range(len(self.subject)):
             score = self._compare(offset)
             self.scores.append((score, offset))
         self.score, self.offset = max(self.scores, key = lambda x: x[0])
-        
-        print 'Q: %s\nS: %s\n' % \
-         (self.query, self.subject[self.offset:self.offset+len(self.query)])
+
 
         return (self.score, self.offset)
