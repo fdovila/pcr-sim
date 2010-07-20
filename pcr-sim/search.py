@@ -4,88 +4,98 @@
 ''' I decided to drop BLAST in favor of writing my own search algorithm.
 It's faster because there's no disk IO'''
 
-class SequenceError(Exception):
-    pass
-
+# Nucleotide match/mismatch scores
 nucleotides = {
- 'A': 'A',    # Adenosine
- 'C': 'C',    # Cytidine
- 'G': 'G',      # Guanine
- 'T': 'T',      # Thymidine
- 'U': 'U',      # Uridine
- 'R': 'AG',     # Purine
- 'Y': 'TC',     # Pyrimidine
- 'K': 'GT',     # Keto
- 'M': 'AC',     # Amino
- 'S': 'GC',     # Strong Interaction (3H)
- 'W': 'AT',     # Weak Interaction (2H)
- 'B': 'CGT',    # Not Adenine
- 'D': 'ATG',    # Not Cytosine
- 'H': 'ACT',    # Not Guanine
- 'V': 'ACG',    # Neither Thymidine nor Uridine
- 'N': 'GATCU',  # Any nucleotide
+ 'A': ('A', 2),          # Adenosine
+ 'C': ('C', 3),          # Cytidine
+ 'G': ('G', 3),          # Guanine
+ 'T': ('T', 2),          # Thymidine
+ 'U': ('U', 2),          # Uridine
+ 'R': ('AG', 2.5),       # Purine
+ 'Y': ('TC', 2.5),       # Pyrimidine
+ 'K': ('GT', 2.5),       # Keto
+ 'M': ('AC', 2.5),       # Amino
+ 'S': ('GC', 3),         # Strong Interaction (3H)
+ 'W': ('AT', 2),         # Weak Interaction (2H)
+ 'B': ('CGTU', 8/3),     # Not Adenine
+ 'D': ('ATGU', 7/3),     # Not Cytosine
+ 'H': ('ACTU', 7/3),     # Not Guanine
+ 'V': ('ACG', 8/3),      # Neither Thymidine nor Uridine
+ 'N': ('GATCU', 0),      # Any nucleotide
 }
 
-class Search:
-    ''' an object representing fuzzy, ungapped queryage. '''
+
+class SequenceError(Exception):
+    ''' Bad nucleotide '''
+    pass
     
+
+class Search:
+    ''' an object representing fuzzy, ungapped queryage.
+Instantiate search object prior to querying.  This allows for recycling
+and efficiency.
+
+    S = Search(**kwargs)
+         match = Match score Multiplier (int)
+         mismatch = Mismatch score multiplier (int)
+         pad = ' ' (padding char, no effect if you change it)
+    '''
     def __init__(self, **kwargs):
-        ''' instantiate the search object, only have to do once, I guess. 
-You can set attributes here (if allowed). '''
+
         defaults = {
-            # G≡C while A=T
-            'score': 1,
-            'miss_pen': 1,
-            'padding': 10 }
+              # Score multipliers
+              'match': 2,
+              'mismatch': 1,
+              'pad': ' ',
+            }
+            
         for attr in defaults:
             if attr in kwargs:
                 setattr(self, attr, kwargs[attr])
             else:
-                setattr(self, attr, defaults[attr])                
-        self.padding = ' '*self.padding
-            
+                setattr(self, attr, defaults[attr])
+    
     def _compare(self, offset):
         ''' returns score reflecting string identity '''
         sub = self.subject[offset:len(self.query) + offset]
         score = 0
-        for i, j in zip(sub, self.query):
+        for s, q in zip(sub, self.query):
+            if self.pad in (s, q): continue
             try:
-                if nucleotides[i] == nucleotides[j] and 'N' not in (i, j):
-                    score += self.score
-                if i is not j:
-                    score -= self.miss_pen
+                h = nucleotides[q]
+                if (s in h[0]):
+                    score += self.match*h[1]
+                if s is not q:
+                    score -= self.mismatch*h[1]
                 else: continue
             except KeyError:
-                raise SequenceError, 'funky nucleotide? %s or %s' % (i, j) 
+                raise SequenceError, '\n\nERROR: Funky Nucleotide: \'%s\'' % q
         return score
         
     @property
     def alignments(self):
-        ''' returns a string of all possible alignments '''
+        ''' Returns a string of all possible alignments '''
         assert self.scores
         rez = []
-
-        for score, offset in self.scores:
+        for score, offset in sorted(self.scores, key=lambda x: -x[0]):
             rez += '\n%-5s => %s \n%-7s  %s \n' % \
-             (score, self.query, offset, self.subject[offset:offset+len(self.query)] )
-        return ''.join(rez)
+                (score, self.query, offset, 
+                self.subject[offset:offset+len(self.query)] )
+        return ''.join(rez)        
         
     def find(self, **kwargs):
         ''' Performs actual query - returns int representing start pos\'n. '''
         assert 'query' in kwargs
-        
+        self.scores = []
         # This way you can recycle the object.
         if 'subject' in kwargs:
-            self.subject = kwargs['subject']
             self.query = kwargs['query']
+            self.subject = kwargs['subject']
+            self.subject = self.pad*len(self.query) + self.subject
         else:
             self.query = kwargs['query']
-        
-        self.scores = []
         for offset in range(len(self.subject)):
             score = self._compare(offset)
             self.scores.append((score, offset))
         self.score, self.offset = max(self.scores, key = lambda x: x[0])
-
-
         return (self.score, self.offset)

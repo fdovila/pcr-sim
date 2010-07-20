@@ -27,30 +27,26 @@ def main(argv):
     if not (options.filename or options.forward or options.reverse):
         print >> sys.stderr, 'Usage:', parser.usage
         quit()
-        
-    if options.notprimed:
-        hnotprimed = open(options.notprimed, 'w')
 
     # We can just recycle this object over and over again to save time!
-    S = Search(match=1,  miss_pen=2)
+    S = Search(match=1, miss_pen=1)
 
     forward = options.forward.upper()
     reverse = options.reverse.upper()
 
     with open(options.filename, 'r') as handle:
         records = Fasta(handle)
-        for i, rec in enumerate(records):
+        for rec in records:
             so_f = S.find(subject=rec.seq, query=forward)
             S.scores.sort(key=lambda x: x[0])
             
             # Let's try printing all configurations!
-            #print S.alignments
+            print S.alignments
             
             so_r = S.find(query=reverse)
             #print S.alignments
             print '%5s -> %-5s = %5s' % \
                 (so_f[1], so_r[1], len(rec.seq[so_f[1]:so_r[1]]))
-
             
 if __name__ == '__main__':
     try:
