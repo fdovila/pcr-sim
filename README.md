@@ -20,9 +20,22 @@ This software is distributed with *ABSOLUTELY NO WARRANT*
 
 ## How-To
 
-PCR-SIM prints contigs out to Standard Output so you just pipe to a file
+__Installation:__
 
-    pcrsim.py -i input.fasta -f <Forward: 5'->3'> -r <Reverse: 5'->3' > pcr_products.fasta
+Is pretty easy:
 
-Take note that the reverse primer is still written 5'->3',
-the script will reverse-complement for you.
+    cd pcr-sim/
+    sudo python setup.py install
+
+On windows, I'm not sure how to do this.  Probably something like:
+
+    cd pcr-sim:
+    python.exe setup.py install
+
+
+__Usage:__
+
+PCR-Sim works like this:
+
+    pcrsim -i input.fasta -f <Forward: 5'->3'> -r <Reverse: 5'->3' -o out.fa
+
