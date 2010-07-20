@@ -29,7 +29,7 @@ Is pretty easy:
 
 On windows, I'm not sure how to do this.  Probably something like:
 
-    cd pcr-sim:
+    cd pcr-sim/
     python.exe setup.py install
 
 
