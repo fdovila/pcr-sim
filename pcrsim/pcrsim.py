@@ -52,7 +52,7 @@ def main():
             
 if __name__ == '__main__':
     try:
-        main(sys.argv)
+        main()
     except KeyboardInterrupt:
         print >> sys.stderr, 'User Exited!'
         quit()

@@ -5,7 +5,7 @@
 It's faster because there's no disk IO'''
 
 # Nucleotide match/mismatch scores
-unweighted_nucleotides = {
+nucleotides = {
  'A': ('A', 2),          # Adenosine
  'C': ('C', 3),          # Cytidine
  'G': ('G', 3),          # Guanine
@@ -24,7 +24,7 @@ unweighted_nucleotides = {
  'N': ('GATCU', 0),      # Any nucleotide
 }
 
-nucleotides = {
+unweighted_nucleotides = {
  'A': ('A', 1),          # Adenosine
  'C': ('C', 1),          # Cytidine
  'G': ('G', 1),          # Guanine
