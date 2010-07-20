@@ -10,7 +10,6 @@ By: Austin Davis-Richardson
  - ...searches templates for matches to primer sequences.
  - ...understands ambiguous nucleotides.
  - ...uses Python 2.6.
- - ...is not a substitute for a girlfriend.
 
 ## License
 
