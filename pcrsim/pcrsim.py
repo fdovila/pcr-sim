@@ -3,6 +3,7 @@ from optparse import OptionParser
 import sys
 from fasta import *
 from search import *
+from multiprocessing import Pool
 
 VERSION = '0.0.1'
 
@@ -28,7 +29,7 @@ def main():
         quit()
 
     # We can just recycle this object over and over again to save time!
-    S = Search(match=1, miss_pen=1)
+
 
     forward = options.forward.upper()
     reverse = options.reverse.upper()
@@ -37,19 +38,27 @@ def main():
         outfile = open(options.output, 'w')
     else:
         outfile = None
+
+    def do_search(rec):
+        S = Search(match=1, miss_pen=1)  
+        so_f = S.find(subject=rec.seq, query=forward)
+        so_r = S.find(query=reverse)
+        # Do the numbers make sense?
+        if so_f[1] < so_r[1]:
+            print >> outfile, '>%s\n%s' % \
+                (rec.head, rec.seq[so_f[1]:so_r[1]])
+            print '%5s -> %-5s = %5s' % \
+                (so_f[1], so_r[1], len(rec.seq[so_f[1]:so_r[1]]))
+        
+      
+    P = Pool()
         
     with open(options.filename, 'r') as handle:
         records = Fasta(handle)
-        for rec in records:
-            so_f = S.find(subject=rec.seq, query=forward)
-            so_r = S.find(query=reverse)
-            # Do the numbers make sense?
-            if so_f[1] < so_r[1]:
-                print >> outfile, '>%s\n%s' % \
-                    (rec.head, rec.seq[so_f[1]:so_r[1]])
-                print '%5s -> %-5s = %5s' % \
-                    (so_f[1], so_r[1], len(rec.seq[so_f[1]:so_r[1]]))
-            
+        work = ( P.apply_async(do_search(rec)) for rec in records )
+        for job in work:
+            del job
+
 if __name__ == '__main__':
     try:
         main()
