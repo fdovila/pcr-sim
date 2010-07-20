@@ -41,7 +41,7 @@ def main(argv):
             S.scores.sort(key=lambda x: x[0])
             
             # Let's try printing all configurations!
-            print S.alignments
+            #print S.alignments
             
             so_r = S.find(query=reverse)
             #print S.alignments

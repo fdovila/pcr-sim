@@ -24,6 +24,25 @@ nucleotides = {
  'N': ('GATCU', 0),      # Any nucleotide
 }
 
+unweighted_nucleotides = {
+ 'A': ('A', 1),          # Adenosine
+ 'C': ('C', 1),          # Cytidine
+ 'G': ('G', 1),          # Guanine
+ 'T': ('T', 1),          # Thymidine
+ 'U': ('U', 1),          # Uridine
+ 'R': ('AG', 1),       # Purine
+ 'Y': ('TC', 1),       # Pyrimidine
+ 'K': ('GT', 1),       # Keto
+ 'M': ('AC', 1),       # Amino
+ 'S': ('GC', 1),         # Strong Interaction (3H)
+ 'W': ('AT', 1),         # Weak Interaction (2H)
+ 'B': ('CGTU', 1),     # Not Adenine
+ 'D': ('ATGU', 1),     # Not Cytosine
+ 'H': ('ACTU', 1),     # Not Guanine
+ 'V': ('ACG', 1),      # Neither Thymidine nor Uridine
+ 'N': ('GATCU', 1),      # Any nucleotide
+}
+
 
 class SequenceError(Exception):
     ''' Bad nucleotide '''
@@ -44,7 +63,7 @@ and efficiency.
 
         defaults = {
               # Score multipliers
-              'match': 2,
+              'match': 1,
               'mismatch': 1,
               'pad': ' ',
             }
@@ -63,11 +82,11 @@ and efficiency.
             if self.pad in (s, q): continue
             try:
                 h = nucleotides[q]
-                if (s in h[0]):
+                if (s in h[0]) or (s == q):
                     score += self.match*h[1]
-                if s is not q:
+                elif s is not q:
                     score -= self.mismatch*h[1]
-                else: continue
+                else: continue # what's this for?
             except KeyError:
                 raise SequenceError, '\n\nERROR: Funky Nucleotide: \'%s\'' % q
         return score
