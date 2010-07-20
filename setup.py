@@ -4,7 +4,7 @@ import os
 DOC = 'See README.md'
 
 setup(
-    name="pcr-sim",
+    name="pcrsim",
     version="0.0.1",
     author="Austin G. Davis-Richardson",
     author_email="harekrishna@gmail.com",
@@ -19,7 +19,7 @@ setup(
     
     entry_points = {
         'console_scripts': [ 
-            'pcrsim' = 'pcrsim.pcrsim:main'
+            'pcrsim = pcrsim.pcrsim:main'
             ]
     }
 

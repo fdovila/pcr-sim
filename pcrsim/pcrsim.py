@@ -6,7 +6,7 @@ from search import *
 
 VERSION = '0.0.1'
 
-def main(argv):
+def main():
     """Simulates a PCR, outputs \"contigs\" """
     parser = OptionParser(
         description='pcrsim.py - Simulates PCR on a given input FASTA.', 
