@@ -8,7 +8,6 @@ VERSION = '0.0.1'
 
 def main(argv):
     """Simulates a PCR, outputs \"contigs\" """
-    
     parser = OptionParser(
         description='pcrsim.py - Simulates PCR on a given input FASTA.', 
         usage = 'pcrsim.py -i infile -f forward_primer -r reverse_primer',
@@ -16,11 +15,11 @@ def main(argv):
     parser.add_option("-i", "--infile", dest="filename",
         help="Specify Input FASTA file", type="string")
     parser.add_option("-f", "--forward", dest="forward",
-        help="Specify forward primer (5' to 3')",
-        type="string")
+        help="Specify forward primer (5' to 3')", type="string")
     parser.add_option("-r", "--reverse", dest="reverse",
-        help="Specify reverse primer (5' to 3')",
-        type="string")
+        help="Specify reverse primer (5' to 3')", type="string")
+    parser.add_option("-o", "--output", dest="output", 
+        help="Output contigs file", type="string")
                     
     (options, args) = parser.parse_args()
     
@@ -34,19 +33,22 @@ def main(argv):
     forward = options.forward.upper()
     reverse = options.reverse.upper()
 
+    if options.output:
+        outfile = open(options.output, 'w')
+    else:
+        outfile = None
+        
     with open(options.filename, 'r') as handle:
         records = Fasta(handle)
         for rec in records:
             so_f = S.find(subject=rec.seq, query=forward)
-            S.scores.sort(key=lambda x: x[0])
-            
-            # Let's try printing all configurations!
-            #print S.alignments
-            
             so_r = S.find(query=reverse)
-            #print S.alignments
-            print '%5s -> %-5s = %5s' % \
-                (so_f[1], so_r[1], len(rec.seq[so_f[1]:so_r[1]]))
+            # Do the numbers make sense?
+            if so_f[1] < so_r[1]:
+                print >> outfile, '>%s\n%s' % \
+                    (rec.head, rec.seq[so_f[1]:so_r[1]])
+                print '%5s -> %-5s = %5s' % \
+                    (so_f[1], so_r[1], len(rec.seq[so_f[1]:so_r[1]]))
             
 if __name__ == '__main__':
     try:

@@ -5,7 +5,7 @@
 It's faster because there's no disk IO'''
 
 # Nucleotide match/mismatch scores
-nucleotides = {
+unweighted_nucleotides = {
  'A': ('A', 2),          # Adenosine
  'C': ('C', 3),          # Cytidine
  'G': ('G', 3),          # Guanine
@@ -24,7 +24,7 @@ nucleotides = {
  'N': ('GATCU', 0),      # Any nucleotide
 }
 
-unweighted_nucleotides = {
+nucleotides = {
  'A': ('A', 1),          # Adenosine
  'C': ('C', 1),          # Cytidine
  'G': ('G', 1),          # Guanine
@@ -100,10 +100,10 @@ and efficiency.
             rez += '\n%-5s => %s \n%-7s  %s \n' % \
                 (score, self.query, offset, 
                 self.subject[offset:offset+len(self.query)] )
-        return ''.join(rez)        
-        
+        return ''.join(rez)
+    
     def find(self, **kwargs):
-        ''' Performs actual query - returns int representing start pos\'n. '''
+        ''' Performs actual query - returns (score, offset) '''
         assert 'query' in kwargs
         self.scores = []
         # This way you can recycle the object.
