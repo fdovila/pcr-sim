@@ -4,7 +4,7 @@ import sys
 from fasta import *
 from search import *
 
-VERSION = '0.0.1'
+VERSION = '0.1'
 
 def main():
     """Simulates a PCR, outputs \"contigs\" """

@@ -32,7 +32,6 @@ On windows, I'm not sure how to do this.  Probably something like:
     cd pcr-sim/
     python.exe setup.py install
 
-
 __Usage:__
 
 PCR-Sim works like this:
