@@ -9,17 +9,17 @@ VERSION = '0.1'
 def main():
     """Simulates a PCR, outputs \"contigs\" """
     parser = OptionParser(
-        description='pcrsim.py - Simulates PCR on a given input FASTA.', 
-        usage = 'pcrsim.py -i infile -f forward_primer -r reverse_primer',
-        version=VERSION)
+     description = 'pcrsim.py - Simulates PCR on a given input FASTA.', 
+     usage = 'pcrsim.py -i infile -f forward_primer -r reverse_primer -o output',
+     version = VERSION)
     parser.add_option("-i", "--infile", dest="filename",
-        help="Specify Input FASTA file", type="string")
+     help="Specify Input FASTA file", type="string")
     parser.add_option("-f", "--forward", dest="forward",
-        help="Specify forward primer (5' to 3')", type="string")
+     help="Specify forward primer (5' to 3')", type="string")
     parser.add_option("-r", "--reverse", dest="reverse",
-        help="Specify reverse primer (5' to 3')", type="string")
+     help="Specify reverse primer (5' to 3')", type="string")
     parser.add_option("-o", "--output", dest="output", 
-        help="Output contigs file", type="string")
+     help="Output contigs file", type="string")
                     
     (options, args) = parser.parse_args()
     
