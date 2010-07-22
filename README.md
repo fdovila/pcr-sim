@@ -20,7 +20,7 @@ This software is distributed with *ABSOLUTELY NO WARRANT*
 
 ## How-To
 
-__Installation:__
+###Installation
 
 Is pretty easy:
 
@@ -32,9 +32,18 @@ On windows, I'm not sure how to do this.  Probably something like:
     cd pcr-sim/
     python.exe setup.py install
 
-__Usage:__
+###Usage
 
 PCR-Sim works like this:
 
-    pcrsim -i input.fasta -f <Forward: 5'->3'> -r <Reverse: 5'->3' -o out.fa
+    pcrsim -i input.fasta -f <Forward: 5'->3'> -r <Reverse: 5'->3'> -o out.fa
+
+###Output
+
+Headers have the start and stop appended, sequences are truncated from the
+beginning of where the forward primer annealed to the end of where the reverse
+primer annealed.
+
+    > sequence1 (515-806)
+		gatc...ctag
 
