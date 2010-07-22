@@ -46,9 +46,11 @@ def main():
             # Do the numbers make sense?
             if so_f[1] < so_r[1]:
                 print >> outfile, '>%s (%s, %s)\n%s' % \
-                 (rec.head, so_f[1], so_r[1], rec.seq[so_f[1]:so_r[1]])
+                 (rec.head, so_f[1], so_r[1],
+                  rec.seq[so_f[1]:so_r[1]+len(reverse)])
                 print '%5s -> %-5s = %5s\t%s' % \
-                 (so_f[1], so_r[1], len(rec.seq[so_f[1]:so_r[1]]), rec.head)
+                 (so_f[1], so_r[1], 
+                  len(rec.seq[so_f[1]:so_r[1]+len(reverse)]), rec.head)
             
 if __name__ == '__main__':
     try:
