@@ -30,7 +30,6 @@ def main():
 
     # We can just recycle this object over and over again to save time!
 
-
     forward = options.forward.upper()
     reverse = options.reverse.upper()
 
@@ -47,15 +46,14 @@ def main():
         if so_f[1] < so_r[1]:
             print >> outfile, '>%s\n%s' % \
                 (rec.head, rec.seq[so_f[1]:so_r[1]])
-            print '%5s -> %-5s = %5s' % \
+            print >> sys.stderr, '%5s -> %-5s = %5s' % \
                 (so_f[1], so_r[1], len(rec.seq[so_f[1]:so_r[1]]))
-        
-      
+
     P = Pool()
         
     with open(options.filename, 'r') as handle:
         records = Fasta(handle)
-        work = ( P.apply_async(do_search(rec)) for rec in records )
+        work = ( P.apply(do_search(rec)) for rec in records )
         for job in work:
             del job
 
