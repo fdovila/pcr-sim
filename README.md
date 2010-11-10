@@ -15,24 +15,24 @@ PCR SIM simulates an amplicon given a database (fasta file) and primers
 
 Would have an alignment score of `2+2-2=4` based on the score table:
 
-		nucleotides = {
-		 'A': ('A', 2),          # Adenosine
-		 'C': ('C', 3),          # Cytidine
-		 'G': ('G', 3),          # Guanine
-		 'T': ('T', 2),          # Thymidine
-		 'U': ('U', 2),          # Uridine
-		 'R': ('AG', 2.5),       # Purine
-		 'Y': ('TC', 2.5),       # Pyrimidine
-		 'K': ('GT', 2.5),       # Keto
-		 'M': ('AC', 2.5),       # Amino
-		 'S': ('GC', 3),         # Strong Interaction (3H)
-		 'W': ('AT', 2),         # Weak Interaction (2H)
-		 'B': ('CGTU', 8/3),     # Not Adenine
-		 'D': ('ATGU', 7/3),     # Not Cytosine
-		 'H': ('ACTU', 7/3),     # Not Guanine
-		 'V': ('ACG', 8/3),      # Neither Thymidine nor Uridine
-		 'N': ('GATCU', 0),      # Any nucleotide
-		}
+	nucleotides = {
+	 'A': ('A', 2),          # Adenosine
+	 'C': ('C', 3),          # Cytidine
+	 'G': ('G', 3),          # Guanine
+	 'T': ('T', 2),          # Thymidine
+	 'U': ('U', 2),          # Uridine
+	 'R': ('AG', 2.5),       # Purine
+	 'Y': ('TC', 2.5),       # Pyrimidine
+	 'K': ('GT', 2.5),       # Keto
+	 'M': ('AC', 2.5),       # Amino
+	 'S': ('GC', 3),         # Strong Interaction (3H)
+	 'W': ('AT', 2),         # Weak Interaction (2H)
+	 'B': ('CGTU', 8/3),     # Not Adenine
+	 'D': ('ATGU', 7/3),     # Not Cytosine
+	 'H': ('ACTU', 7/3),     # Not Guanine
+	 'V': ('ACG', 8/3),      # Neither Thymidine nor Uridine
+	 'N': ('GATCU', 0),      # Any nucleotide
+	}
 
 You can adjust this by editing `/pcrsim/search.py`. The scores are multiplied
 by `-1` or `-1` depending on match or mismatch, respectively
